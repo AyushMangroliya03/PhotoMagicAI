@@ -1,101 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generated Images</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f7f9;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
-
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
         h1 {
-            color: #333;
-            margin-top: 20px;
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 40px;
         }
-
-        .images-container {
+        .image-grid {
             display: flex;
             flex-wrap: wrap;
+            gap: 20px;
             justify-content: center;
-            margin: 20px;
         }
-
         .image-card {
             background-color: #fff;
+            border: 1px solid #dee2e6;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px;
-            padding: 10px;
-            text-align: center;
-            width: 320px;
+            overflow: hidden;
+            width: 300px;
+            transition: transform 0.2s;
         }
-
+        .image-card:hover {
+            transform: translateY(-10px);
+        }
         .image-card img {
-            border-radius: 10px;
-            max-width: 100%;
+            width: 100%;
             height: auto;
         }
-
-        .image-card a {
+        .image-card .card-body {
+            padding: 15px;
+            text-align: center;
+        }
+        .image-card .card-body a {
             display: inline-block;
             margin-top: 10px;
             padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
             border-radius: 5px;
-            font-weight: bold;
-        }
-
-        .image-card a:hover {
-            background-color: #45a049;
-        }
-
-        .no-images {
-            color: #777;
-            margin-top: 20px;
-        }
-
-        .back-link {
-            margin: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
             text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
+            transition: background-color 0.2s;
         }
-
-        .back-link:hover {
-            background-color: #45a049;
+        .image-card .card-body a:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+            background-color: #343a40;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <h1>Generated Images</h1>
-   
-        <div class="images-container">
-            
-                <div class="image-card">
-                    <img src="{{image_path1}}" alt="Generated Image">
-                    
-                </div>
-                <div class="image-card">
-                    <img src="{{image_path2}}" alt="Generated Image">
-                    
-                </div>
-                <div class="image-card">
-                    <img src="{{image_path3}}" alt="Generated Image">
-                    
-                </div>
-               
-        
+    <div class="container">
+        <h1>Generated Images</h1>
+        <div class="image-grid">
+            {% if generated_images %}
+                {% for image in generated_images %}
+                    <div class="image-card">
+                        <img src="{% static 'generated/' %}{{ user_id }}/{{ image }}" alt="{{ image }}">
+                        <div class="card-body">
+                            <a href="{% url 'download_image' user_id=user_id image_name=image %}">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No generated images available.</p>
+            {% endif %}
         </div>
-    <a class="back-link" href="{% url 'home' %}">Back to Profile</a>
+    </div>
+    <footer>
+        <p>&copy; 2024 Your Company Name. All rights reserved.</p>
+    </footer>
 </body>
 </html>
